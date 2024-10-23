@@ -3,21 +3,30 @@
 
 {% block content %}
 <div class="container mx-auto p-4 border-2 border-blue-200">
-    <h1 class="text-lg px-1">短網址生成器</h1>
-    <div class="flex justify-between gap-2">
-        <form action="{% url "shortener:index" %}" method="POST" class="grow">
-            <label for="url" class="label">連結</label>
-            <input type="text" name="url" placeholder="請輸入或貼上完整網址" class="input input-bordered input-primary w-full rounded-none">
-        </form>
+    <h1 class="text-xl px-1">短網址生成器</h1>
+    <form class="flex justify-between gap-2" id="url_form">
+        {% csrf_token %}
+
         <div class="grow">
-            <label for="shortUrl" class="label">短網址</label>
-            <label for="shortUrl" class="input input-bordered w-full rounded-none flex items-center gap-2">
-                <input type="text" name="shortUrl" class="grow">
-                <i class="fa-regular fa-copy cursor-pointer"></i>
-            </label>
-            <label class="label" for="shortUrl">可自動產生，或是自行填寫</label>
+            <label for="url" class="label">連結</label>
+            {{form.original_url}}
         </div>
-    </div>
+        <div class="grow">
+            <label for="shortUrl" class="label">短網址（可由系統產生，或是自行填寫）</label>
+            <div id="short_url_input">
+                {% include "shortener/_short_url.html" with short_url_value=form.short_url.value only %}
+            </div>
+            <div class="py-1">
+                <button
+                    class="btn btn-xs text-sm rounded-none inline"
+                    hx-get="{% url 'shortener:shorten' %}"
+                    hx-target="#short_url_input"
+                    hx-include="#url_form">
+                    生成短網址
+                </button>
+            </div>
+        </div>
+    </form>
     <div>
         <label class="label flex justify-start gap-2" for="remark">
             備註說明
@@ -28,7 +37,13 @@
         </div>
         <textarea class="textarea textarea-bordered w-full rounded-none" name="remark"></textarea>
 
-        <input type="checkbox" name="enable" value="enable">
+        <input type="checkbox" name="is_checked"
+            value="true" class="cursor-pointer"
+            hx-trigger="change"
+            hx-post="{% url 'shortener:index' %}"
+            hx-swap="none"
+            hx-include="#url_form"
+        >
         <label for="enable">是否啟用</label>
     </div>
 </div>

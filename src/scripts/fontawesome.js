@@ -7,3 +7,4 @@ import { faCopy } from "@fortawesome/free-regular-svg-icons";
 library.add( faCloudArrowDown, faCopy );
 
 dom.i2svg();
+dom.watch();
