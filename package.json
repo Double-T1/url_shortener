@@ -1,0 +1,24 @@
+{
+  "name": "5xurl",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"tailwindcss -i ./src/styles/style.css -o ./static/styles/style.css --watch\" \"esbuild ./src/scripts/app.js --bundle --outfile=./static/scripts/app.js --watch\"",
+    "build": "concurrently \"tailwindcss -i ./src/styles/style.css -o ./static/styles/style.css\" \"esbuild ./src/scripts/app.js --bundle --outfile=./static/scripts/app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "concurrently": "^9.0.1",
+    "daisyui": "^4.12.13",
+    "esbuild": "0.24.0",
+    "tailwindcss": "^3.4.14"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.6.0",
+    "@fortawesome/free-regular-svg-icons": "^6.6.0",
+    "@fortawesome/free-solid-svg-icons": "^6.6.0"
+  }
+}

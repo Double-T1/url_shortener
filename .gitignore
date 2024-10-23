@@ -3,3 +3,6 @@ __pycache__/
 db.sqlite3
 .pre-commit-config.yaml
 makefile
+static/scripts/
+static/styles/
+node_modules

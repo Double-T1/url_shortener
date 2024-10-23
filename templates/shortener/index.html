@@ -2,6 +2,35 @@
 
 
 {% block content %}
+<div class="container mx-auto p-4 border-2 border-blue-200">
+    <h1 class="text-lg px-1">短網址生成器</h1>
+    <div class="flex justify-between gap-2">
+        <form action="{% url "shortener:index" %}" method="POST" class="grow">
+            <label for="url" class="label">連結</label>
+            <input type="text" name="url" placeholder="請輸入或貼上完整網址" class="input input-bordered input-primary w-full rounded-none">
+        </form>
+        <div class="grow">
+            <label for="shortUrl" class="label">短網址</label>
+            <label for="shortUrl" class="input input-bordered w-full rounded-none flex items-center gap-2">
+                <input type="text" name="shortUrl" class="grow">
+                <i class="fa-regular fa-copy cursor-pointer"></i>
+            </label>
+            <label class="label" for="shortUrl">可自動產生，或是自行填寫</label>
+        </div>
+    </div>
+    <div>
+        <label class="label flex justify-start gap-2" for="remark">
+            備註說明
+            <button class="text-sm px-2 py-1 bg-black text-white">
+                <i class="fa-solid fa-cloud-arrow-down"></i>
+                取得頁面資訊
+            </button>
+        </div>
+        <textarea class="textarea textarea-bordered w-full rounded-none" name="remark"></textarea>
 
+        <input type="checkbox" name="enable" value="enable">
+        <label for="enable">是否啟用</label>
+    </div>
+</div>
 
 {% endblock  %}
