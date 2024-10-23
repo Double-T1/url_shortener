@@ -1,4 +1,5 @@
-<label for="short_url" class="input input-bordered w-full rounded-none flex items-center gap-2">
-    <input value="{{short_url_value|default:""}}" type="text" name="short_url" class="grow" maxlength="100" id="id_short_url">
+<label for="short_code" class="input input-bordered w-full rounded-none flex items-center gap-2 pl-0">
+    <span class="input rounded-none bg-gray-300 flex items-center pr-1">{{host}}</span>
+    <input value="{{short_code_value|default:""}}" type="text" name="short_code" class="grow" maxlength="100" id="id_short_code">
     <i class="fa-regular fa-copy cursor-pointer"></i>
 </label>
