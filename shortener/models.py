@@ -6,6 +6,7 @@ class ShortenedUrl(models.Model):
     short_code = models.CharField(
         unique=True, blank=True, max_length=100, db_index=True
     )
+    published = models.BooleanField(default=True)
 
     @classmethod
     def has_short_code(cls, short_code):

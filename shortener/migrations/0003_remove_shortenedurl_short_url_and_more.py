@@ -6,17 +6,19 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('shortener', '0002_alter_shortenedurl_short_url'),
+        ("shortener", "0002_alter_shortenedurl_short_url"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='shortenedurl',
-            name='short_url',
+            model_name="shortenedurl",
+            name="short_url",
         ),
         migrations.AddField(
-            model_name='shortenedurl',
-            name='short_code',
-            field=models.CharField(blank=True, db_index=True, max_length=100, unique=True),
+            model_name="shortenedurl",
+            name="short_code",
+            field=models.CharField(
+                blank=True, db_index=True, max_length=100, unique=True
+            ),
         ),
     ]

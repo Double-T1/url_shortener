@@ -1,7 +1,19 @@
 import random
 import string
 
+from django.core.exceptions import ValidationError
+from django.core.validators import URLValidator
+
 from shortener.models import ShortenedUrl
+
+
+def url_is_valid(url):
+    validator = URLValidator()
+    try:
+        validator(url)
+        return True
+    except ValidationError:
+        return False
 
 
 # make sure it doesn't collide with existing short urls
@@ -20,4 +32,4 @@ def random_code():
 
 
 def get_host(request):
-    return f"http://{request.get_host()}/"
+    return f"http://{request.get_host()}/redirect/"
