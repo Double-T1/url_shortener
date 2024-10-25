@@ -1,9 +1,9 @@
-{% comment %}  {% endcomment %}
+{% comment %} alert-error alert-success  {% endcomment %}
 <div id="messages">
     {% if messages %}
         <ul>
             {% for message in messages %}
-                <li class="alert {{ message.tags }}">{{ message }}</li>
+                <li class="alert alert-{{ message.tags }} rounded-none">{{ message }}</li>
             {% endfor %}
         </ul>
     {% endif %}

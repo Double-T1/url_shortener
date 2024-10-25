@@ -2,7 +2,8 @@
 
 {% block content %}
 <div x-data="shortener" class="container mx-auto p-4 bg-blue-200">
-    <h1 x-ref="test" class="text-xl px-1">短網址生成器</h1>
+    <h1 class="text-xl px-1">短網址生成器</h1>
+
     <form class="flex gap-2 flex-col md:flex-row" id="url_form">
         {% csrf_token %}
 
@@ -12,24 +13,25 @@
         </div>
         <div class="grow md:w-1/2">
             <label for="shortUrl" class="label">短網址（可由系統產生，或是自行填寫。最長 100 字元。）</label>
-            <div id="short_url_input">
+            <div id="short_code_input" x-ref="shortCodeInput">
                 {% include "shortener/_short_url.html" with short_code_value=form.short_code.value host=host only %}
             </div>
             <div class="py-1">
                 <button
-                    class="btn btn-xs text-sm rounded-none inline"
+                    class="btn btn-xs bg-black text-white hover:bg-white hover:text-black text-sm rounded-none"
                     hx-get="{% url 'shortener:shorten' %}"
-                    hx-target="#short_url_input">
+                    hx-target="#short_code_input">
                     生成短網址
                 </button>
             </div>
         </div>
     </form>
+
     <div>
         <label class="label flex justify-start gap-2" for="remark">
             備註說明
             <button
-                class="text-sm px-2 py-1 bg-black text-white"
+                class="text-sm px-2 py-1 bg-black text-white hover:bg-white hover:text-black"
                 hx-get="{% url "shortener:info" %}"
                 hx-include="#id_original_url"
                 hx-target="#info_area"
@@ -41,16 +43,18 @@
         {% include "shortener/_info_area.html" %}
 
         <input type="checkbox" name="is_checked"
+            x-model="isChecked"
             value="true" class="cursor-pointer"
-            hx-trigger="change"
+            hx-trigger="click"
             hx-post="{% url 'shortener:index' %}"
             hx-target="#message"
             hx-include="#url_form"
         >
         <label for="enable">是否啟用</label>
-        <div id="message" class="container mx-auto bg-blue-200">
-            {% include "shortener/_message.html" %}
-        </div>
+    </div>
+
+    <div x-show="showMessage" x-ref="message" id="message" class="container mx-auto bg-blue-200">
+        {% include "shortener/_message.html" %}
     </div>
 </div>
 

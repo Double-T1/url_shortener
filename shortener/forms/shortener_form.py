@@ -15,6 +15,7 @@ class ShortenedUrlForm(forms.ModelForm):
                     "required": "true",
                     "class": "input input-bordered rounded-none bg-white w-full",
                     "name": "url",
+                    "@input": "clearCheckBox()",
                 }
             ),
         }

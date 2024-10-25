@@ -1,6 +1,3 @@
-from ast import parse
-from operator import is_
-
 import requests
 from bs4 import BeautifulSoup
 from django.contrib import messages
@@ -20,10 +17,8 @@ from .utils.shortener import (
 def index(request):
     if request.method == "POST":
         is_checked = request.POST.get("is_checked", False) == "true"
-        ShortenedUrl.objects.filter()
         form = ShortenedUrlForm(request.POST)
-        form_status = form.is_valid()
-        if form_status:
+        if form.is_valid():
             short_code = form.cleaned_data.get("short_code")
             if ShortenedUrl.has_short_code(short_code):
                 instance = ShortenedUrl.objects.get(short_code=short_code)

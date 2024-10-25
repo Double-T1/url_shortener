@@ -1,7 +1,7 @@
-<label x-data="{ text:'{{short_code_value|default:""}}' }" for="short_code" class="input input-bordered rounded-none flex items-center gap-2 pl-0">
+<label x-ref="labelShortCode" data-code="{{short_code_value|default:''}}" for="short_code" class="input input-bordered rounded-none flex items-center gap-2 pl-0">
     <div class="input rounded-none bg-gray-300 flex items-center w-fit px-1">{{host}}</div>
-    <input x-model="text" type="text" class="grow w-1/2 pl-0" name="short_code" maxlength="100" id="id_short_code">
-    <div @click="navigator.clipboard.writeText('{{host}}' + text)"  class="tooltip tooltip-top" data-tip="複製短網址">
+    <input @input="clearCheckBox()" x-model="shortCode" type="text" class="grow w-1/2 pl-0" name="short_code" maxlength="100" id="id_short_code">
+    <div @click="navigator.clipboard.writeText('{{host}}' + shortCode)"  class="tooltip tooltip-top" data-tip="複製短網址">
         <i class="fa-regular fa-copy cursor-pointer"></i>
     </div>
 </label>

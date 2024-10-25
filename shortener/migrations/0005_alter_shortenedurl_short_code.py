@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('shortener', '0004_shortenedurl_published'),
+        ("shortener", "0004_shortenedurl_published"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='shortenedurl',
-            name='short_code',
+            model_name="shortenedurl",
+            name="short_code",
             field=models.CharField(blank=True, db_index=True, max_length=100),
         ),
     ]
