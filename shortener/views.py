@@ -1,3 +1,6 @@
+from ast import parse
+from operator import is_
+
 import requests
 from bs4 import BeautifulSoup
 from django.contrib import messages
@@ -6,65 +9,52 @@ from django.shortcuts import redirect, render
 
 from .forms.shortener_form import ShortenedUrlForm
 from .models import ShortenedUrl
-from .utils.shortener import generate_short_code, get_host, url_is_valid
+from .utils.shortener import (
+    generate_short_code,
+    get_host,
+    parse_form_errors,
+    url_is_valid,
+)
 
 
 def index(request):
     if request.method == "POST":
-        # update or create
-        # check if short_url exists yet, if not, create one for it
-
-        # has short_url
-        # create or update if
-        is_checked = request.POST.get("is_checked", False)
+        is_checked = request.POST.get("is_checked", False) == "true"
+        ShortenedUrl.objects.filter()
         form = ShortenedUrlForm(request.POST)
         form_status = form.is_valid()
-        if is_checked == "true":
-            if form_status:
-                # better way of writing this logic
-                if form.cleaned_data.get("short_code", "") == "":
-                    return render(
-                        request, "shortener/index.html", {"form": form, "host": host}
-                    )
-                form.save()
-                messages.success(request, "輸入成功，短網址已啟用")
+        if form_status:
+            short_code = form.cleaned_data.get("short_code")
+            if ShortenedUrl.has_short_code(short_code):
+                instance = ShortenedUrl.objects.get(short_code=short_code)
+                instance.published = is_checked
+                instance.save()
             else:
-                messages.error(request, "輸入資料錯誤，請重新輸入")
-        else:
-            print("here")
-            print(form.errors)
-            if form_status:
-                print("aloha")
-                url = form.save(commit=False)
-                url.published = False
-                url.save()
-                messages.success(request, "已停用該短網址")
+                form.save()
 
-        return HttpResponse(status=204)
+            messages.success(
+                request, "輸入成功，短網址已啟用" if is_checked else "已停用該短網址"
+            )
+        else:
+            errors = parse_form_errors(form)
+            for error in errors:
+                messages.error(request, error)
+
+        return render(request, "shortener/_message.html")
+
     host = get_host(request)
     form = ShortenedUrlForm()
     return render(request, "shortener/index.html", {"form": form, "host": host})
 
 
-# show existing matching short_url
-# if the inserted url clashes => tell them no when checked box
-# if no short_url => create one
-#
 def shorten(request):
-    form = ShortenedUrlForm(request.GET)
     host = get_host(request)
-    if form.is_valid():
-        short_code = form.cleaned_data.get("short_code", "")
-        if not short_code:
-            short_code = generate_short_code()
-
-        return render(
-            request,
-            "shortener/_short_url.html",
-            {"short_code_value": short_code, "host": host},
-        )
-    messages.error(request, "輸入資料錯誤，請重新輸入")
-    return render(request, "shortener/_short_url.html", {"host": host})
+    short_code = generate_short_code()
+    return render(
+        request,
+        "shortener/_short_url.html",
+        {"short_code_value": short_code, "host": host},
+    )
 
 
 def redirect_url(request, short_code):

@@ -7,6 +7,14 @@ from django.core.validators import URLValidator
 from shortener.models import ShortenedUrl
 
 
+def parse_form_errors(form):
+    errors = []
+    for field, error_list in form.errors.items():
+        for message in error_list:
+            errors.append(field + " : " + message)
+    return errors
+
+
 def url_is_valid(url):
     validator = URLValidator()
     try:

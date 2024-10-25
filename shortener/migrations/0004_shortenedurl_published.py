@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('shortener', '0003_remove_shortenedurl_short_url_and_more'),
+        ("shortener", "0003_remove_shortenedurl_short_url_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='shortenedurl',
-            name='published',
+            model_name="shortenedurl",
+            name="published",
             field=models.BooleanField(default=True),
         ),
     ]

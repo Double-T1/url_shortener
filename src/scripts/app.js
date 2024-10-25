@@ -1,5 +1,5 @@
-import { Alpine } from "alpinejs";
-import "./info";
+import Alpine from "alpinejs";
+import "./shortener";
 import "./fontawesome";
 import "htmx.org";
 

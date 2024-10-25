@@ -3,9 +3,7 @@ from django.db import models
 
 class ShortenedUrl(models.Model):
     original_url = models.URLField()
-    short_code = models.CharField(
-        unique=True, blank=True, max_length=100, db_index=True
-    )
+    short_code = models.CharField(blank=True, max_length=100, db_index=True)
     published = models.BooleanField(default=True)
 
     @classmethod
