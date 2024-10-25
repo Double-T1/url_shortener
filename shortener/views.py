@@ -19,7 +19,8 @@ def index(request):
     if request.method == "POST":
         is_checked = request.POST.get("is_checked", False) == "true"
         form = ShortenedUrlForm(request.POST)
-        if form.is_valid():
+        form_status = form.is_valid()
+        if form_status:
             short_code = form.cleaned_data.get("short_code")
             if ShortenedUrl.has_short_code(short_code):
                 instance = ShortenedUrl.objects.get(short_code=short_code)
@@ -29,14 +30,23 @@ def index(request):
                 form.save()
 
             messages.success(
-                request, "輸入成功，短網址已啟用" if is_checked else "已停用該短網址"
+                request,
+                (
+                    "已啟用該短網址。另外，短網址已被複製，可直接貼到搜尋欄。"
+                    if is_checked
+                    else "已停用該短網址"
+                ),
             )
         else:
             errors = parse_form_errors(form)
             for error in errors:
                 messages.error(request, error)
 
-        return render(request, "shortener/_message.html")
+        return render(
+            request,
+            "shortener/_message.html",
+            {"status": "copyShortUrl" if form_status and is_checked else ""},
+        )
 
     host = get_host(request)
     form = ShortenedUrlForm()
@@ -99,5 +109,5 @@ def info(request):
 
     except requests.RequestException:
         return render(
-            request, "shortener/_info_area.html", {"title": "無效連結，請重新嘗試"}
+            request, "shortener/_info_area.html", {"title": "無法取得相關資訊。"}
         )

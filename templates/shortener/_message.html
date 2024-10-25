@@ -1,10 +1,18 @@
 {% comment %} alert-error alert-success  {% endcomment %}
-<div id="messages">
+{% load svg_icon %}
+<div id="messages" data-status="{{status|default:''}}">
     {% if messages %}
         <ul>
             {% for message in messages %}
-                <li class="alert alert-{{ message.tags }} rounded-none">{{ message }}</li>
+                <li x-data class="alert alert-{{ message.tags }} rounded-none text-white flex justify-between border-2 border-black mb-1">
+                    <div>
+                        {{ message.tags|svg_icon }}
+                        <span class="select-none">{{ message }}</span>
+                    </div>
+                    <button @click="$root.remove()" class="btn btn-xs btn-circle">X</button>
+                </li>
             {% endfor %}
         </ul>
     {% endif %}
 </div>
+
