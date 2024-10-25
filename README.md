@@ -16,7 +16,7 @@
 
 1. 部署： Gunicorn, Nginx, EC2
 2. 前端： Alpine.js, HTMX, Tailwind CSS
-3. 後端： Django, sqlite3
+3. 後端： Django, SQLite3
 
 Gunicorn 運行截圖：
 <img src="./static/images/gunicorn.png" alt="Gunicorn status" width="70%" />
