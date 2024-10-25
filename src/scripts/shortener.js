@@ -4,7 +4,7 @@ import Alpine from "alpinejs";
 Alpine.data("shortener", () => ({
     shortCode: "",
     isChecked: false,
-    showMessage: false,
+    showMessage: true,
 
     init() {
         this.getShortCode();
@@ -26,5 +26,9 @@ Alpine.data("shortener", () => ({
     clearCheckBox() {
         this.isChecked = false;
         this.showMessage = false;
+    },
+
+    loadMessage() {
+        this.$refs.remarkArea.value = "載入中請稍候...";
     }
 }));

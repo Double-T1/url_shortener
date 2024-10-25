@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 from django.contrib import messages
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
+from django.views.decorators.http import require_GET
 
 from .forms.shortener_form import ShortenedUrlForm
 from .models import ShortenedUrl
@@ -42,6 +43,7 @@ def index(request):
     return render(request, "shortener/index.html", {"form": form, "host": host})
 
 
+@require_GET
 def shorten(request):
     host = get_host(request)
     short_code = generate_short_code()
@@ -52,10 +54,8 @@ def shorten(request):
     )
 
 
+@require_GET
 def redirect_url(request, short_code):
-    # original_url =
-    # return redirect(original_url)
-    # what happens if the short_url doesn't eixst?
     if ShortenedUrl.has_short_code(short_code):
         url = ShortenedUrl.objects.get(short_code=short_code)
         if url.published:
@@ -65,27 +65,39 @@ def redirect_url(request, short_code):
     return redirect("shortener:index")
 
 
+@require_GET
 def info(request):
     url = request.GET.get("original_url", "")
     if not url_is_valid(url):
-        return HttpResponse("無效連結，請重新嘗試")
+        return render(
+            request, "shortener/_info_area.html", {"title": "無效連結，請重新嘗試"}
+        )
+
     try:
         response = requests.get(url)
         response.raise_for_status()
         soup = BeautifulSoup(response.content, "html.parser")
-        title = soup.title.string if soup.title else "無標題"
-        description = "無相關描述"
+        title = "標題： " + soup.title.string if soup.title else "無標題"
+
+        description = None
         description_tag = soup.find("meta", attrs={"name": "description"})
         if description_tag:
-            description = description_tag.get("content", "無相關描述")
+            description = description_tag.get("content", None)
         else:
             og_description_tag = soup.find("meta", attrs={"property": "og:description"})
             if og_description_tag:
-                description = og_description_tag.get("content", "無相關描述")
+                description = og_description_tag.get("content", None)
+        description = (
+            "相關描述: " + description if description is not None else "無相關描述"
+        )
+
         return render(
             request,
             "shortener/_info_area.html",
             {"title": title, "description": description},
         )
+
     except requests.RequestException:
-        return HttpResponse("無效連結，請重新嘗試")
+        return render(
+            request, "shortener/_info_area.html", {"title": "無效連結，請重新嘗試"}
+        )

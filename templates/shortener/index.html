@@ -18,9 +18,10 @@
             </div>
             <div class="py-1">
                 <button
-                    class="btn btn-xs bg-black text-white hover:bg-white hover:text-black text-sm rounded-none"
+                    class="btn btn-xs border-none bg-black text-white hover:bg-white hover:text-black text-sm rounded-none"
                     hx-get="{% url 'shortener:shorten' %}"
-                    hx-target="#short_code_input">
+                    hx-target="#short_code_input"
+                    @click="clearCheckBox()">
                     生成短網址
                 </button>
             </div>
@@ -32,6 +33,7 @@
             備註說明
             <button
                 class="text-sm px-2 py-1 bg-black text-white hover:bg-white hover:text-black"
+                @click="clearCheckBox(); loadMessage()"
                 hx-get="{% url "shortener:info" %}"
                 hx-include="#id_original_url"
                 hx-target="#info_area"
