@@ -8,6 +8,7 @@ Alpine.data("shortener", () => ({
 
     init() {
         this.getShortCode();
+        this.$refs.remarkArea.value = "";
 
         this.$refs.shortCodeInput.addEventListener("htmx:afterSettle", () => {
            this.getShortCode();
@@ -15,6 +16,10 @@ Alpine.data("shortener", () => ({
 
         this.$refs.message.addEventListener("htmx:afterSettle", () => {
            this.showMessage = true;
+        })
+
+        this.$refs.remarkBtn.addEventListener("htmx:beforeRequest", () => {
+            this.$refs.remarkArea.value = "載入中請稍候...";
         })
     },
 
@@ -27,8 +32,4 @@ Alpine.data("shortener", () => ({
         this.isChecked = false;
         this.showMessage = false;
     },
-
-    loadMessage() {
-        this.$refs.remarkArea.value = "載入中請稍候...";
-    }
 }));

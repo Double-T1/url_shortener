@@ -1,8 +1,8 @@
 {% extends "layouts/base.html" %}
 
 {% block content %}
-<div x-data="shortener" class="container mx-auto p-4 bg-blue-200">
-    <h1 class="text-xl px-1">短網址生成器</h1>
+<div x-data="shortener" class="container mx-auto p-4 bg-blue-200 text-black">
+    <h1 class="text-xl px-1 text-bold">短網址生成器</h1>
 
     <form class="flex gap-2 flex-col md:flex-row" id="url_form">
         {% csrf_token %}
@@ -33,13 +33,19 @@
             備註說明
             <button
                 class="text-sm px-2 py-1 bg-black text-white hover:bg-white hover:text-black"
-                @click="clearCheckBox(); loadMessage()"
+                @click="clearCheckBox()"
+                x-ref="remarkBtn"
                 hx-get="{% url "shortener:info" %}"
                 hx-include="#id_original_url"
                 hx-target="#info_area"
                 hx-swap="outerHTML">
                 <i class="fa-solid fa-cloud-arrow-down"></i>
                 取得頁面資訊
+            </button>
+            <button
+                class="text-sm px-2 py-1 bg-black text-white hover:bg-white hover:text-black"
+                @click="$refs.remarkArea.value = ''">
+                清除頁面資訊
             </button>
         </label>
         {% include "shortener/_info_area.html" %}
