@@ -2,7 +2,7 @@
 
 <img src="./static/images/index.png" alt="Url shortener webpage" width="100%" />
 <br>
-網站連結：http://52.68.183.120/
+
 
 ## 使用方法
 
